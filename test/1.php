@@ -16,7 +16,7 @@ require __DIR__ . "/../src/Data.php";
 require __DIR__ . "/../src/DataSet.php";
 
 
-class UserManager extends \DB\Mongo\DBManager
+class UserManager extends \rayful\MongoDB\DBManager
 {
 
     /**
@@ -29,7 +29,7 @@ class UserManager extends \DB\Mongo\DBManager
     }
 }
 
-class User extends \DB\Mongo\Data
+class User extends \rayful\MongoDB\Data
 {
     public $username;
 
@@ -49,7 +49,7 @@ class User extends \DB\Mongo\Data
     /**
      * 声明数据库管理实例
      * @example return new ProductManager();    //是一个DBManager的子类实例
-     * @return \DB\Mongo\DBManager
+     * @return \rayful\MongoDB\DBManager
      */
     public function DBManager()
     {
@@ -57,13 +57,13 @@ class User extends \DB\Mongo\Data
     }
 }
 
-class Users extends \DB\Mongo\DataSet
+class Users extends \rayful\MongoDB\DataSet
 {
 
     /**
      * 声明迭代器返回的对象实例
      * @example return new Product();   //Product是Data的子类
-     * @return \DB\Mongo\Data
+     * @return \rayful\MongoDB\Data
      */
     protected function iterated()
     {

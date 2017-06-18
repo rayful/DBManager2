@@ -6,7 +6,7 @@
  * Time: 下午5:49
  */
 
-namespace DB\Mongo;
+namespace rayful\MongoDB;
 
 
 use Traversable;

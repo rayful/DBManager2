@@ -6,7 +6,7 @@
  * Time: 上午9:31
  */
 
-namespace DB\Mongo;
+namespace rayful\MongoDB;
 
 
 use MongoDB\Driver\Manager;

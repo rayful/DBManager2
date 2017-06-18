@@ -6,7 +6,7 @@
  * Time: 下午4:42
  */
 
-namespace DB\Mongo;
+namespace rayful\MongoDB;
 
 use MongoDB\BSON\ObjectID;
 use MongoDB\Driver\BulkWrite;

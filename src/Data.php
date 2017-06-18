@@ -6,7 +6,7 @@
  * Time: 上午9:52
  */
 
-namespace DB\Mongo;
+namespace rayful\MongoDB;
 
 
 use MongoDB\BSON\ObjectID;
