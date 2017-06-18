@@ -1,0 +1,21 @@
+{
+  "name": "rayful/db-manager2",
+  "description": "A new MongoDB ORM for mongoDB Driver for PHP(PHP7)",
+  "type": "library",
+  "require": {
+    "rayful/toolkit": "1.2.3.1",
+    "rayful/pagination": "^1.03"
+  },
+  "license": "MIT",
+  "authors": [
+    {
+      "name": "kingmax",
+      "email": "a@xiyanghui.com"
+    }
+  ],
+  "autoload": {
+    "psr-4": {
+      "rayful\\MongoDB\\": "src"
+    }
+  }
+}
