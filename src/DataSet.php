@@ -26,12 +26,6 @@ abstract class DataSet implements \IteratorAggregate
     protected $_cursor;
 
     /**
-     * 迭代器
-     * @var \IteratorIterator
-     */
-    protected $_iterator;
-
-    /**
      * 数据库搜索条件
      * @var array
      */
@@ -122,7 +116,11 @@ abstract class DataSet implements \IteratorAggregate
     public function getIterator()
     {
         $this->query();
-        return new DataSetIterator($this->getCursor(), $this->iterated());
+        foreach ($this->getCursor() as $data){
+            $DataObject = $this->iterated();
+            $DataObject->set($data);
+            yield $DataObject;
+        }
     }
 
     /**

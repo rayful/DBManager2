@@ -10,7 +10,6 @@ define("MONGO_HOST", "mongodb://127.0.0.1");
 define("MONGO_DB", "test");
 
 require __DIR__ . "/../vendor/autoload.php";
-require __DIR__ . "/../src/DataSetIterator.php";
 require __DIR__ . "/../src/DBManager.php";
 require __DIR__ . "/../src/Data.php";
 require __DIR__ . "/../src/DataSet.php";
@@ -92,7 +91,7 @@ print_r($User);
 
 //删
 $User->delete();
-echo "Is exists? " . $User->isExists() ? "true" : "false";
+echo "Is exists? " . $User->isExists() ? "true\n" : "false\n";
 
 //批量插入及查询
 for ($i = 0; $i <= 10; $i++) {
@@ -103,7 +102,7 @@ for ($i = 0; $i <= 10; $i++) {
 }
 
 $Users = new Users();
-$Users->find(['username' => ['$in' => ['user1', 'user2', 'user3']]])->sort(['truename' => -1])->limit(2);
+$Users->find(['username' => ['$in' => ['user1', 'user2', 'user3']]])->sort(['truename' => -1])->limit(3);
 foreach ($Users as $User) {
     echo $User . "\n";
 }
