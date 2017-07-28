@@ -96,6 +96,10 @@ abstract class DataSet implements \IteratorAggregate
         return $array;
     }
 
+    public function toArray()
+    {
+        return $this->__toArray();
+    }
 
     /**
      * 声明迭代器返回的对象实例
@@ -113,6 +117,10 @@ abstract class DataSet implements \IteratorAggregate
         return $this->iterated()->DBManager();
     }
 
+    /**
+     * 仅为了实现迭代器，一般不使用。
+     * @return \Generator
+     */
     public function getIterator()
     {
         $this->query();
@@ -288,6 +296,7 @@ abstract class DataSet implements \IteratorAggregate
         if ($_REQUEST) {
             $this->setByRequest($_REQUEST);
         }
+        return $this;
     }
 
     public function setByRequest(array $request)
