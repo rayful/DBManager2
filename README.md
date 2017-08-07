@@ -3,6 +3,9 @@ A new ORM Driver for mongoDB driver for PHP(PHP7)
 
 require: PHP5.5+, MongoDB Driver.
 
+# Install
+composer require rayful/db-manager2
+
 # History
 https://github.com/rayful/DBManager
 
