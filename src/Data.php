@@ -64,54 +64,54 @@ abstract class Data
     {
         $filter = $this->genQuery($param);
         $option = ['limit' => 1];
-        $Query = new Query($filter, $option);
-        $rows = $this->DBManager()->getManager()->executeQuery($this->DBManager()->getNamespace(), $Query)->toArray();
+        $query = new Query($filter, $option);
+        $rows = $this->DBManager()->getManager()->executeQuery($this->DBManager()->getNamespace(), $query)->toArray();
         return $this->set(current($rows));
     }
 
     public function isExists()
     {
-        $Query = new Query($this->filter());
-        return count($this->DBManager()->getManager()->executeQuery($this->DBManager()->getNamespace(), $Query)->toArray()) > 0;
+        $query = new Query($this->filter());
+        return count($this->DBManager()->getManager()->executeQuery($this->DBManager()->getNamespace(), $query)->toArray()) > 0;
     }
 
     public function save()
     {
-        $Bulk = new BulkWrite();
-        $Bulk->update($this->filter(), $this->toArrayAndRemoveEmptyId(), ['upsert' => true]);
-        $Result = $this->DBManager()->getManager()->executeBulkWrite($this->DBManager()->getNamespace(), $Bulk);
-        if($ids= $Result->getUpsertedIds())
+        $bulkWrite = new BulkWrite();
+        $bulkWrite->update($this->filter(), $this->toArrayAndRemoveEmptyId(), ['upsert' => true]);
+        $result = $this->DBManager()->getManager()->executeBulkWrite($this->DBManager()->getNamespace(), $bulkWrite);
+        if($ids= $result->getUpsertedIds())
             $this->setID($ids[0]);
-        return $Result;
+        return $result;
     }
 
     public function insert()
     {
         $this->checkIsExists(false);
-        $Bulk = new BulkWrite();
-        $id = $Bulk->insert($this->toArrayAndRemoveEmptyId());
+        $bulkWrite = new BulkWrite();
+        $id = $bulkWrite->insert($this->toArrayAndRemoveEmptyId());
         if($id)
             $this->setID($id);
-        $Result = $this->DBManager()->getManager()->executeBulkWrite($this->DBManager()->getNamespace(), $Bulk);
-        return $Result;
+        $result = $this->DBManager()->getManager()->executeBulkWrite($this->DBManager()->getNamespace(), $bulkWrite);
+        return $result;
     }
 
     public function update($newObj)
     {
         $this->checkIsExists();
-        $Bulk = new BulkWrite();
-        $Bulk->update($this->filter(), $newObj);
-        $Result = $this->DBManager()->getManager()->executeBulkWrite($this->DBManager()->getNamespace(), $Bulk);
-        return $Result;
+        $bulkWrite = new BulkWrite();
+        $bulkWrite->update($this->filter(), $newObj);
+        $result = $this->DBManager()->getManager()->executeBulkWrite($this->DBManager()->getNamespace(), $bulkWrite);
+        return $result;
     }
 
     public function delete()
     {
         $this->checkIsExists();
-        $Bulk = new BulkWrite();
-        $Bulk->delete($this->filter());
-        $Result = $this->DBManager()->getManager()->executeBulkWrite($this->DBManager()->getNamespace(), $Bulk);
-        return $Result;
+        $bulkWrite = new BulkWrite();
+        $bulkWrite->delete($this->filter());
+        $result = $this->DBManager()->getManager()->executeBulkWrite($this->DBManager()->getNamespace(), $bulkWrite);
+        return $result;
     }
 
     protected function checkIsExists($flag = true)
@@ -121,7 +121,7 @@ abstract class Data
         }
     }
 
-    private function toArrayAndRemoveEmptyId()
+    public function toArrayAndRemoveEmptyId()
     {
         $array = $this->toArray();
         if (empty($array['_id'])) unset($array['_id']);

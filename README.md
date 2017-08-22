@@ -8,6 +8,11 @@ composer require rayful/db-manager2
 
 # History
 https://github.com/rayful/DBManager
+## 2.0版本
+*去除几个函数，包括：DataSet=>setByRequest与readRequest，变成parseRequest($request);
+*分页依赖变成最新版rayful/pagination 2.0，留下paginate方法，但不包含样式，最新分页详细说明请见:https://github.com/rayful/Pagination
+*增加DBManager的批量操作功能，包括批量入库、更新及删除，请见DBManager内的三个方法，分别是insert、update、delete及flush方法。也可以见下面的例子。
+*魔术方法统一用_request_（开头）+请求变量名称。
 
 # Code Example:
 ```php
@@ -130,4 +135,38 @@ foreach ($Users as $User) {
 }
 
 echo "total:" . $Users->count() . "\n";
+
+//批量分批插入
+$User1 = new User();
+$User1->truename = "Leo";
+
+$User2 = new User();
+$User2->truename = "Mark";
+
+$User = new User();
+$User->username = "kingmax";
+$User->save();
+
+$User3 = new User(['username'=>'kingmax']);
+$User3->truename = "杨灵";
+
+$UserManager = new UserManager();
+$UserManager->insert($User1);
+$UserManager->insert($User2);
+$UserManager->update($User3);
+
+$result = $UserManager->flush();
+
+print_r($result);
+
+//批量删除
+$UserManager = new UserManager();
+$UserManager->delete($User1);
+$UserManager->delete($User2);
+$UserManager->delete($User3);
+
+$result = $UserManager->flush();
+
+print_r($result);
+
 ```

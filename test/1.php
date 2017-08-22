@@ -123,3 +123,35 @@ foreach ($Users as $User) {
 }
 
 echo "total:" . $Users->count() . "\n";
+
+//批量分批插入
+$User1 = new User();
+$User1->truename = "Leo";
+
+$User2 = new User();
+$User2->truename = "Mark";
+
+$User = new User();
+$User->username = "kingmax";
+$User->save();
+
+$User3 = new User(['username'=>'kingmax']);
+$User3->truename = "杨灵";
+
+$UserManager = new UserManager();
+$UserManager->insert($User1);
+$UserManager->insert($User2);
+$UserManager->update($User3);
+
+$result = $UserManager->flush();
+
+print_r($result);
+
+$UserManager = new UserManager();
+$UserManager->delete($User1);
+$UserManager->delete($User2);
+$UserManager->delete($User3);
+
+$result = $UserManager->flush();
+
+print_r($result);
