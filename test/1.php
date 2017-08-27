@@ -138,10 +138,15 @@ $User->save();
 $User3 = new User(['username'=>'kingmax']);
 $User3->truename = "杨灵";
 
+$User4 = ['username'=>'soul'];
+$User5 = ['_id'=>$User->_id, 'truename'=>'张三'];
+
 $UserManager = new UserManager();
 $UserManager->insert($User1);
 $UserManager->insert($User2);
 $UserManager->update($User3);
+$UserManager->insert($User4);
+$UserManager->update($User5);
 
 $result = $UserManager->flush();
 
@@ -151,6 +156,7 @@ $UserManager = new UserManager();
 $UserManager->delete($User1);
 $UserManager->delete($User2);
 $UserManager->delete($User3);
+$UserManager->delete($User4);
 
 $result = $UserManager->flush();
 

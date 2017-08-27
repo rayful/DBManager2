@@ -270,10 +270,10 @@ abstract class DataSet implements \IteratorAggregate
     /**
      * ## 魔术调用 ## 根据请求自动生成查询、过滤、排序、分页限制等条件
      * 注意：2.0版本以下的readRequest、setByRequest因为命名的原因已经被废弃。
-     * @param \Traversable $request 请求的内容，一般为可遍历的数组
+     * @param array|\Iterator $request 请求的内容，一般为可遍历的数组
      * @return $this
      */
-    public function parseRequest(\Traversable $request)
+    public function parseRequest($request)
     {
         foreach ($request as $key => $value) {
             if ($value !== "") {    //允许为0等PHP认为的空值

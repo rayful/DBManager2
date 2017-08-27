@@ -8,11 +8,16 @@ composer require rayful/db-manager2
 
 # History
 https://github.com/rayful/DBManager
+
+## 2.01版本
+- Fix Bug, DataSet parseRequest()的强制参数类型去除
+- Fix Bug, DBManager的insert、update、delete三个方法同时兼容数组及对象，并且入库前会将入参转换为数组，使代码执行稳定性更强（待验证）
+
 ## 2.0版本
-*去除几个函数，包括：DataSet=>setByRequest与readRequest，变成parseRequest($request);
-*分页依赖变成最新版rayful/pagination 2.0，留下paginate方法，但不包含样式，最新分页详细说明请见:https://github.com/rayful/Pagination
-*增加DBManager的批量操作功能，包括批量入库、更新及删除，请见DBManager内的三个方法，分别是insert、update、delete及flush方法。也可以见下面的例子。
-*魔术方法统一用_request_（开头）+请求变量名称。
+- 去除几个函数，包括：DataSet=>setByRequest与readRequest，变成parseRequest($request);
+- 分页依赖变成最新版rayful/pagination 2.0，留下paginate方法，但不包含样式，最新分页详细说明请见:https://github.com/rayful/Pagination
+- 增加DBManager的批量操作功能，包括批量入库、更新及删除，请见DBManager内的三个方法，分别是insert、update、delete及flush方法。也可以见下面的例子。
+- 魔术方法统一用_request_（开头）+请求变量名称。
 
 # Code Example:
 ```php
@@ -150,23 +155,27 @@ $User->save();
 $User3 = new User(['username'=>'kingmax']);
 $User3->truename = "杨灵";
 
+$User4 = ['username'=>'soul'];
+$User5 = ['_id'=>$User->_id, 'truename'=>'张三'];
+
 $UserManager = new UserManager();
 $UserManager->insert($User1);
 $UserManager->insert($User2);
 $UserManager->update($User3);
+$UserManager->insert($User4);
+$UserManager->update($User5);
 
 $result = $UserManager->flush();
 
 print_r($result);
 
-//批量删除
 $UserManager = new UserManager();
 $UserManager->delete($User1);
 $UserManager->delete($User2);
 $UserManager->delete($User3);
+$UserManager->delete($User4);
 
 $result = $UserManager->flush();
 
 print_r($result);
-
 ```

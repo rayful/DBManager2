@@ -32,9 +32,9 @@ abstract class DBManager
      */
     protected function host()
     {
-        if(defined("MONGO_HOST")){
+        if (defined("MONGO_HOST")) {
             return MONGO_HOST;
-        }else{
+        } else {
             throw new \Exception("You must define MONGO_HOST constant.");
         }
     }
@@ -46,16 +46,16 @@ abstract class DBManager
      */
     protected function DBName()
     {
-        if(defined("MONGO_DB")){
+        if (defined("MONGO_DB")) {
             return MONGO_DB;
-        }else{
+        } else {
             throw new \Exception("You must define MONGO_DB constant.");
         }
     }
 
     public function getManager()
     {
-        if(is_null(self::$manager)){
+        if (is_null(self::$manager)) {
             self::$manager = new Manager($this->host());
         }
         return self::$manager;
@@ -63,7 +63,7 @@ abstract class DBManager
 
     public function getNamespace()
     {
-        return $this->DBName().".".$this->collectionName();
+        return $this->DBName() . "." . $this->collectionName();
     }
 
     public function getDBName()
@@ -92,7 +92,7 @@ abstract class DBManager
 
     protected function getBulkWrite()
     {
-        if(is_null(self::$bulkWrite)){
+        if (is_null(self::$bulkWrite)) {
             self::$bulkWrite = new BulkWrite();
         }
         return self::$bulkWrite;
@@ -100,32 +100,35 @@ abstract class DBManager
 
     /**
      * 批量插入（需要用flush去服务器端执行）
-     * @param Data $data
+     * @param Data|object|array $data
      */
-    public function insert(Data &$data)
+    public function insert(&$data)
     {
-        if(is_object($data) && is_null($data->_id)) unset($data->_id);
-        $id = $this->getBulkWrite()->insert($data);
-        $data->_id = $id;
+        $insertData = $this->convertToInsert($data);
+        $id = $this->getBulkWrite()->insert($insertData);
+        if (is_object($data)) $data->_id = $id;
+        elseif (is_array($data)) $data['_id'] = $id;
     }
 
     /**
      * 批量更新（需要用flush去服务器端执行）
-     * @param Data $data
+     * @param Data|object|array $data
      */
-    public function update(Data $data)
+    public function update($data)
     {
-        $newObject = $data->toArray();  unset($newObject['_id']);
-        $this->getBulkWrite()->update(['_id' => $data->_id], ['$set'=>$newObject]);
+        $updateData = $this->convertToUpdate($data);
+        $id = $this->getId($data);
+        $this->getBulkWrite()->update(['_id' => $id], ['$set' => $updateData]);
     }
 
     /**
      * 批量删除（需要用flush去服务器端执行）
-     * @param Data $data
+     * @param Data|object|array $data
      */
-    public function delete(Data $data)
+    public function delete($data)
     {
-        $this->getBulkWrite()->delete(['_id' => $data->_id]);
+        $id = $this->getId($data);
+        $this->getBulkWrite()->delete(['_id' => $id]);
     }
 
     public function flush()
@@ -133,5 +136,37 @@ abstract class DBManager
         $result = $this->getManager()->executeBulkWrite($this->getNamespace(), $this->getBulkWrite());
         self::$bulkWrite = null;
         return $result;
+    }
+
+    private function convertToInsert($data)
+    {
+        if (is_object($data)) {
+            if (property_exists($data, "_id") && is_null($data->_id)) unset($data->_id);
+            return get_object_vars($data);
+        } else if (is_array($data)) {
+            if (array_key_exists("_id", $data) && is_null($data['_id'])) unset($data['_id']);
+            return $data;
+        }
+    }
+
+    private function convertToUpdate($data)
+    {
+        if (is_object($data)) {
+            $data = get_object_vars($data);
+        }
+
+        if (array_key_exists("_id", $data)) unset($data['_id']);
+        return $data;
+    }
+
+    private function getId($data)
+    {
+        if(is_object($data) && isset($data->_id)){
+            return $data->_id;
+        }elseif(is_array($data) && isset($data['_id'])){
+            return $data['_id'];
+        }else{
+            throw new \Exception("data has no id found.");
+        }
     }
 }
