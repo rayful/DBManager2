@@ -32,7 +32,7 @@ require __DIR__ . "/../src/Data.php";
 require __DIR__ . "/../src/DataSet.php";
 
 
-class UserManager extends \DB\Mongo\DBManager
+class UserManager extends \rayful\MongoDB\DBManager
 {
 
     /**
@@ -45,7 +45,7 @@ class UserManager extends \DB\Mongo\DBManager
     }
 }
 
-class User extends \DB\Mongo\Data
+class User extends \rayful\MongoDB\Data
 {
     public $username;
 
@@ -73,7 +73,7 @@ class User extends \DB\Mongo\Data
     }
 }
 
-class Users extends \DB\Mongo\DataSet
+class Users extends \rayful\MongoDB\DataSet
 {
 
     /**
