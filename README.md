@@ -9,6 +9,20 @@ composer require rayful/db-manager2
 # History
 https://github.com/rayful/DBManager
 
+## 2.1版本
+- 增加对日期的格式转换显示、还有入库时自动取当时时间的支持，见DatetimeUtility类；
+```php
+$user = new stdClass();
+$user->created = \rayful\MongoDB\DatetimeUtility::getNowDatetime();
+echo \rayful\MongoDB\DatetimeUtility::toString($user->created);
+```
+- 增加对MongoGridFS的支持（依赖mongodb/mongodb包）
+```php
+$gridFSManager = new \rayful\MongoDB\GridFSManager();
+$id = $gridFSManager->upload('','abc.jpg', '/Users/kingmax/Downloads/全部行为.jpg');
+
+$bytes = $gridFSManager->downloadBytes('', $id);
+```
 ## 2.01版本
 - Fix Bug, DataSet parseRequest()的强制参数类型去除
 - Fix Bug, DBManager的insert、update、delete三个方法同时兼容数组及对象，并且入库前会将入参转换为数组，使代码执行稳定性更强（待验证）
